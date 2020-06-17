@@ -8,7 +8,7 @@ var userDB = {
                 return callback(err, null);
             } else {
                 console.log("Connected!");
-                var sql = 'SELECT * FROM user';
+                var sql = 'SELECT * FROM tbuser';
                 conn.query(sql, function (err, result) {
                     conn.release();
                     if (err) {
@@ -31,7 +31,7 @@ var userDB = {
                 return callback(err, null)
             } else {
                 console.log("Connected!");
-                var sql = 'INSERT INTO user (useremail, userpassword, name) values (?,?,?)';
+                var sql = 'INSERT INTO tbuser (useremail, userpassword, name) values (?,?,?)';
                 conn.query(sql, [useremail, userpassword, name], function (err, result) {
                     conn.release();
 
@@ -55,7 +55,7 @@ var userDB = {
                 return callback(err, null)
             } else {
                 console.log("Connected!")
-                var sql = 'DELETE FROM user WHERE userid=?';
+                var sql = 'DELETE FROM tbuser WHERE userid=?';
                 conn.query(sql, [userid], function (err, result) {
                     conn.release();
                     if (err) {
@@ -71,28 +71,52 @@ var userDB = {
     },
     /* end function delete user */
 
-    updateUser: function(useremail, userpassword, name, userid, callback){
-        pool.getConnection(function(err, conn){
-            if(err){
+    updateUser: function (useremail, userpassword, name, userid, callback) {
+        pool.getConnection(function (err, conn) {
+            if (err) {
                 console.log(err);
                 return callback(err, null);
-            }else{
+            } else {
                 console.log('Connected!');
-                console.log(userid+","+useremail+","+userpassword+ ","+name);
-                var sql = 'UPDATE user SET useremail=?, userpassword=?, name=? WHERE userid=?';
-                conn.query(sql, [useremail, userpassword, name, userid], function(err, result){
+                console.log(userid + "," + useremail + "," + userpassword + "," + name);
+                var sql = 'UPDATE tbuser SET useremail=?, userpassword=?, name=? WHERE userid=?';
+                conn.query(sql, [useremail, userpassword, name, userid], function (err, result) {
                     conn.release();
-                    if(err){
+                    if (err) {
                         console.log(err);
                         return callback(err, null);
-                    }else{
+                    } else {
                         console.log(result);
                         return callback(null, result);
                     }
                 })
             }
         })
-    }
+    },
     /* end function update user */
+
+    getFavorite: function (callback) {
+        pool.getConnection(function (err, conn) {
+            if (err) {
+                console.log(err);
+                return callback(err, null);
+            }
+            else {
+                console.log("Connected!");
+                var sql = 'SELECT tbuser.name AS name, tbfurniture.name AS favorit, tbfurniture.price AS price FROM tbfurniture LEFT JOIN tbuser ON tbfurniture.it_id = tbuser.userid';
+                // var sql = 'SELECT * FROM tbuser JOIN tbfurniture ON tbfurniture.it_id = tbuser.userid';
+                conn.query(sql, function (err, result) {
+                    conn.release();
+                    if (err) {
+                        console.log(err);
+                        return callback(err, null);
+                    } else {
+                        console.log(result);
+                        return callback(null, result);
+                    }
+                });
+            }
+        });
+    }
 };
 module.exports = userDB

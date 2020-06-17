@@ -8,7 +8,7 @@ var furnitureDB = {
                 return callback(err, null);
             } else {
                 console.log("Connected!");
-                var sql = 'SELECT * FROM tb_furniture';
+                var sql = 'SELECT * FROM tbfurniture';
                 conn.query(sql, function (err, result) {
                     conn.release();
                     if (err) {
@@ -32,7 +32,7 @@ var furnitureDB = {
             }
             else {
                 console.log("Connected!");
-                var sql = 'SELECT * FROM tb_furniture where cat_id = ?';
+                var sql = 'SELECT * FROM tbfurniture where cat_id = ?';
                 conn.query(sql, [catid], function (err, result) {
                     conn.release();
                     if (err) {
@@ -45,7 +45,7 @@ var furnitureDB = {
                 });
             }
         });
-    }
+    },
     /* end function get furniture by ID */
 };
 module.exports = furnitureDB
