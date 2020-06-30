@@ -24,6 +24,7 @@ var handleError = (err, res) => {
         .end(err.code + "\nOops! Something went wrong!");
 };
 
+// get all product
 app.get('/api/furniture', function (req, res) {
     furniture.getFurniture(function (err, result) {
         if (!err) {
@@ -35,6 +36,7 @@ app.get('/api/furniture', function (req, res) {
     })
 })
 
+// get id product
 app.get('/api/category/:catid/furniture', function (req, res) {
     var catid = req.params.catid;
     furniture.getFurnitureByCat(catid, function (err, result) {
@@ -47,6 +49,8 @@ app.get('/api/category/:catid/furniture', function (req, res) {
     });
 });
 
+
+// get favorit user
 app.get('/api/user/favorite', function (req, res) {
     user.getFavorite(function (err, result) {
         if (!err) {
@@ -58,6 +62,7 @@ app.get('/api/user/favorite', function (req, res) {
     })
 })
 
+// get all user
 app.get('/api/user', function (req, res) {
     user.getUsers(function (err, result) {
         if (!err) {
@@ -69,6 +74,7 @@ app.get('/api/user', function (req, res) {
     })
 })
 
+// add user
 app.post('/api/user', urlencodedParser, jsonParser, function (req, res) {
     var useremail = req.body.useremail;
     var userpassword = req.body.userpassword;
@@ -84,6 +90,7 @@ app.post('/api/user', urlencodedParser, jsonParser, function (req, res) {
     })
 })
 
+// delete user by id
 app.delete('/api/user/:userid', function (req, res) {
     const userid = req.params.userid;
 
@@ -110,6 +117,7 @@ app.delete('/api/user/:userid', function (req, res) {
     })
 })
 
+// update user by id
 app.post('/api/user/:userid', urlencodedParser, jsonParser, function (req, res) {
     var userid = req.params.userid;
     var useremail = req.body.useremail;
